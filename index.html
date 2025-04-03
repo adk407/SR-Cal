@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pivot Point Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        label {
+            flex: 1;
+            text-align: left;
+        }
+        input {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .results {
+            text-align: left;
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pivot Point Calculator</h2>
+        <div class="input-group">
+            <label>High (H):</label>
+            <input type="number" id="high" step="any">
+        </div>
+        <div class="input-group">
+            <label>Low (L):</label>
+            <input type="number" id="low" step="any">
+        </div>
+        <div class="input-group">
+            <label>Close (C):</label>
+            <input type="number" id="close" step="any">
+        </div>
+        <button onclick="calculatePivotPoints()">Calculate</button>
+        <div class="results" id="results"></div>
+    </div>
+
+    <script>
+        function calculatePivotPoints() {
+            let high = parseFloat(document.getElementById('high').value);
+            let low = parseFloat(document.getElementById('low').value);
+            let close = parseFloat(document.getElementById('close').value);
+            
+            if (isNaN(high) || isNaN(low) || isNaN(close)) {
+                document.getElementById('results').innerHTML = "<p>Please enter valid numbers for High, Low, and Close.</p>";
+                return;
+            }
+            
+            let P = (high + low + close) / 3;
+            let R1 = (2 * P) - low;
+            let R2 = P + (high - low);
+            let R3 = high + 2 * (P - low);
+            let S1 = (2 * P) - high;
+            let S2 = P - (high - low);
+            let S3 = low - 2 * (high - P);
+            
+            document.getElementById('results').innerHTML = `
+                <p><strong>Pivot (P):</strong> ${P.toFixed(2)}</p>
+                <p><strong>Resistance 1 (R1):</strong> ${R1.toFixed(2)}</p>
+                <p><strong>Resistance 2 (R2):</strong> ${R2.toFixed(2)}</p>
+                <p><strong>Resistance 3 (R3):</strong> ${R3.toFixed(2)}</p>
+                <p><strong>Support 1 (S1):</strong> ${S1.toFixed(2)}</p>
+                <p><strong>Support 2 (S2):</strong> ${S2.toFixed(2)}</p>
+                <p><strong>Support 3 (S3):</strong> ${S3.toFixed(2)}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
