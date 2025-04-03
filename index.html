@@ -54,11 +54,37 @@
             background: #e9ecef;
             border-radius: 5px;
         }
+        .description {
+            text-align: left;
+            margin-top: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+	table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Pivot Point Calculator</h2>
+        <div class="description">
+            <p><strong>Pivot Point Calculation:</strong></p>
+            <p>Pivot points are technical analysis indicators used to determine potential support and resistance levels in financial markets. They are calculated based on the previous day's high, low, and closing prices. Traders use these levels to identify possible price movements and make informed trading decisions.</p>
+        </div>
+        <button onclick="fetchPreviousDayGoldPrices()">Fetch Previous Day's Gold Prices</button>
         <div class="input-group">
             <label>High (H):</label>
             <input type="number" id="high" step="any">
@@ -76,6 +102,30 @@
     </div>
 
     <script>
+        async function fetchPreviousDayGoldPrices() {
+            const apiKey = 'JFG0SQ4SIOPKDD9I'; // Your Alpha Vantage API key
+            const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=XAUUSD&apikey=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (!data || !data["Time Series (Daily)"]) {
+                    throw new Error('Invalid API response. Check API key or data availability.');
+                }
+                
+                const dates = Object.keys(data["Time Series (Daily)"]);
+                const previousDay = data["Time Series (Daily)"][dates[1]]; // Get previous day's data
+
+                document.getElementById('high').value = previousDay["2. high"];
+                document.getElementById('low').value = previousDay["3. low"];
+                document.getElementById('close').value = previousDay["4. close"];
+            } catch (error) {
+                console.error('Error fetching gold prices:', error);
+                alert(error.message);
+            }
+        }
+
         function calculatePivotPoints() {
             let high = parseFloat(document.getElementById('high').value);
             let low = parseFloat(document.getElementById('low').value);
@@ -95,13 +145,19 @@
             let S3 = low - 2 * (high - P);
             
             document.getElementById('results').innerHTML = `
-                <p><strong>Pivot (P):</strong> ${P.toFixed(2)}</p>
-                <p><strong>Resistance 1 (R1):</strong> ${R1.toFixed(2)}</p>
-                <p><strong>Resistance 2 (R2):</strong> ${R2.toFixed(2)}</p>
-                <p><strong>Resistance 3 (R3):</strong> ${R3.toFixed(2)}</p>
-                <p><strong>Support 1 (S1):</strong> ${S1.toFixed(2)}</p>
-                <p><strong>Support 2 (S2):</strong> ${S2.toFixed(2)}</p>
-                <p><strong>Support 3 (S3):</strong> ${S3.toFixed(2)}</p>
+                <table>
+                    <tr>
+                        <th>Level</th>
+                        <th>Value</th>
+                    </tr>
+                    <tr><td>Pivot (P)</td><td>${P.toFixed(2)}</td></tr>
+                    <tr><td>Resistance 1 (R1)</td><td>${R1.toFixed(2)}</td></tr>
+                    <tr><td>Resistance 2 (R2)</td><td>${R2.toFixed(2)}</td></tr>
+                    <tr><td>Resistance 3 (R3)</td><td>${R3.toFixed(2)}</td></tr>
+                    <tr><td>Support 1 (S1)</td><td>${S1.toFixed(2)}</td></tr>
+                    <tr><td>Support 2 (S2)</td><td>${S2.toFixed(2)}</td></tr>
+                    <tr><td>Support 3 (S3)</td><td>${S3.toFixed(2)}</td></tr>
+                </table>
             `;
         }
     </script>
