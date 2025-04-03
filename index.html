@@ -115,7 +115,7 @@
                 }
                 
                 const dates = Object.keys(data["Time Series (Daily)"]);
-                const previousDay = data["Time Series (Daily)"][dates[1]]; // Get previous day's data
+                const previousDay = data["Time Series (Daily)"][dates[0]]; // Get previous day's data
 
                 document.getElementById('high').value = previousDay["2. high"];
                 document.getElementById('low').value = previousDay["3. low"];
