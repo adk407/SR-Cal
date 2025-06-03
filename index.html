@@ -192,14 +192,30 @@
         }
     </script>
 
-<div id="tweet-embed"></div>
+<div id="tweetEmbed"></div>
+
 <script>
-  fetch("YOUR_WEB_APP_URL")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("tweet-embed").innerHTML = html;
-      twttr.widgets.load();
-    });
+fetch('https://script.google.com/macros/s/AKfycbwMFMX8sUe1OpgdcDgPjaqIcAvS3a3m7Odcn-okfDFySBAwfP0Em8nlarRJXll2jUcL/exec')
+  .then(res => res.json())
+  .then(data => {
+    const tweetURL = data.tweet; // assuming JSON returns { tweet: "https://twitter.com/..." }
+
+    const blockquote = document.createElement("blockquote");
+    blockquote.className = "twitter-tweet";
+    blockquote.innerHTML = `<a href="${tweetURL}"></a>`;
+
+    document.getElementById("tweetEmbed").appendChild(blockquote);
+
+    const script = document.createElement("script");
+    script.setAttribute("src", "https://platform.twitter.com/widgets.js");
+    script.setAttribute("async", "");
+    script.setAttribute("charset", "utf-8");
+    document.body.appendChild(script);
+  })
+  .catch(err => {
+    console.error("Failed to load tweet:", err);
+  });
 </script>
+
 </body>
 </html>
