@@ -192,29 +192,31 @@
         }
     </script>
 
-<div id="tweetEmbed"></div>
+<div id="tweetEmbed">Loading tweet...</div>
 
 <script>
-fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec") // replace with your script URL
+fetch("YOUR_SCRIPT_URL")
   .then(response => response.json())
   .then(data => {
     const tweetURL = data.tweet;
     const blockquote = document.createElement("blockquote");
     blockquote.className = "twitter-tweet";
     blockquote.innerHTML = `<a href="${tweetURL}"></a>`;
+    document.getElementById("tweetEmbed").innerHTML = "";
     document.getElementById("tweetEmbed").appendChild(blockquote);
 
-    const twitterScript = document.createElement("script");
-    twitterScript.setAttribute("src", "https://platform.twitter.com/widgets.js");
-    twitterScript.setAttribute("async", "");
-    twitterScript.setAttribute("charset", "utf-8");
-    document.body.appendChild(twitterScript);
+    const script = document.createElement("script");
+    script.setAttribute("src", "https://platform.twitter.com/widgets.js");
+    script.setAttribute("async", "");
+    script.setAttribute("charset", "utf-8");
+    document.body.appendChild(script);
   })
   .catch(error => {
     console.error("Failed to load tweet:", error);
     document.getElementById("tweetEmbed").innerText = "Error loading tweet.";
   });
 </script>
+
 
 
 
