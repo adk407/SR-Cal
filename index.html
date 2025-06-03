@@ -115,7 +115,7 @@
         </div>
         <button onclick="calculatePivotPoints()">Calculate</button>
         <div class="results" id="results"></div>
-	<!-- Footer -->
+<!-- Footer -->
     <footer>
         <div class="social-icons">
             <a href="https://x.com/SWADrops" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
@@ -187,5 +187,15 @@
             `;
         }
     </script>
+
+<div id="tweet-embed"></div>
+<script>
+  fetch("YOUR_WEB_APP_URL")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("tweet-embed").innerHTML = html;
+      twttr.widgets.load();
+    });
+</script>
 </body>
 </html>
