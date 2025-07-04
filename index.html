@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,29 +13,34 @@
             margin: 20px;
             background-color: #f4f4f4;
         }
+
         .container {
             background: white;
             padding: 20px;
-            max-width: 400px;
+            max-width: 600px;
             margin: auto;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
+
         .input-group {
             display: flex;
             justify-content: space-between;
             margin: 10px 0;
         }
+
         label {
             flex: 1;
             text-align: left;
         }
+
         input {
             flex: 2;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         button {
             width: 100%;
             padding: 10px;
@@ -45,9 +51,11 @@
             cursor: pointer;
             font-size: 16px;
         }
+
         button:hover {
             background: #218838;
         }
+
         .results {
             text-align: left;
             margin-top: 20px;
@@ -55,6 +63,7 @@
             background: #e9ecef;
             border-radius: 5px;
         }
+
         .description {
             text-align: left;
             margin-top: 20px;
@@ -63,89 +72,114 @@
             border-radius: 5px;
         }
 
-	table {
+        table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
         }
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid black;
         }
-        th, td {
+
+        th,
+        td {
             padding: 8px;
             text-align: center;
         }
-	footer {
+
+        footer {
             margin-top: 30px;
             padding: 20px 10px;
             background-color: #333;
             color: #fff;
         }
+
         .social-icons a {
             color: #fff;
             margin: 0 10px;
             font-size: 20px;
             text-decoration: none;
         }
+
         .social-icons a:hover {
             color: #ffd700;
         }
-	.twitter-embed {
-  		text-align: center;
-  		margin-top: 30px;
-	}
 
+        .twitter-embed {
+            text-align: center;
+            margin-top: 30px;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Pivot Point Calculator</h2>
+
         <div class="description">
             <p><strong>Pivot Point Calculation:</strong></p>
-            <p>Pivot points are technical analysis indicators used to determine potential support and resistance levels in financial markets. They are calculated based on the previous day's high, low, and closing prices of the NY marcket. Traders use these levels to identify possible price movements and make informed trading decisions.</p>
+            <p>Pivot points are technical analysis indicators used to determine potential support and resistance levels in financial markets. They are calculated based on the previous day's high, low, and closing prices of the NY market. Traders use these levels to identify possible price movements and make informed trading decisions.</p>
         </div>
+
         <button onclick="fetchPreviousDayGoldPrices()">Fetch Previous Day's Gold Prices</button>
+
         <div class="input-group">
             <label>High (H):</label>
             <input type="number" id="high" step="any">
         </div>
+
         <div class="input-group">
             <label>Low (L):</label>
             <input type="number" id="low" step="any">
         </div>
+
         <div class="input-group">
             <label>Close (C):</label>
             <input type="number" id="close" step="any">
         </div>
+
         <button onclick="calculatePivotPoints()">Calculate</button>
+
         <div class="results" id="results"></div>
-<!-- Footer -->
+
+        <!-- Google Apps Script Tweet Loader -->
+        <div class="twitter-embed">
+            <iframe src="https://script.google.com/macros/s/AKfycbzWwWOpRgyzXYaRi6EfuZzZTcWVTZtR0HjwvFFQBz5Fe71deATqAN_ujz0yxPqoOvqVlw/exec"
+                width="100%" height="600" frameborder="0"></iframe>
+        </div>
+            <!-- Footer -->
     <footer>
         <div class="social-icons">
             <a href="https://x.com/SWADrops" target="_blank" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-            <a href="https://t.me/SWAD_99" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
+            <a href="https://t.me/+Ck3uDC0b2jE5NGFl" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
             <a href="https://www.facebook.com/profile.php?id=100080819571042" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
             <a href="https://swadlk.github.io/SWADrops/" target="_blank" title="Website"><i class="fas fa-globe"></i></a>
         </div>
-        <p>&copy; © 2025 SWAD. Built with ❤️ for the FX community..</p>
+        <p>&copy; 2025 SWAD. Built with ❤️ for the FX community.</p>
     </footer>
+
     </div>
 
+
+    <!-- Scripts -->
     <script>
         async function fetchPreviousDayGoldPrices() {
-            const apiKey = 'JFG0SQ4SIOPKDD9I'; // Your Alpha Vantage API key
+            const apiKey = 'JFG0SQ4SIOPKDD9I';
             const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=XAUUSD&apikey=${apiKey}`;
 
             try {
                 const response = await fetch(url);
                 const data = await response.json();
-                
+
                 if (!data || !data["Time Series (Daily)"]) {
                     throw new Error('Invalid API response. Check API key or data availability.');
                 }
-                
+
                 const dates = Object.keys(data["Time Series (Daily)"]);
-                const previousDay = data["Time Series (Daily)"][dates[0]]; // Get previous day's data
+                const previousDay = data["Time Series (Daily)"][dates[0]];
 
                 document.getElementById('high').value = previousDay["2. high"];
                 document.getElementById('low').value = previousDay["3. low"];
@@ -160,12 +194,12 @@
             let high = parseFloat(document.getElementById('high').value);
             let low = parseFloat(document.getElementById('low').value);
             let close = parseFloat(document.getElementById('close').value);
-            
+
             if (isNaN(high) || isNaN(low) || isNaN(close)) {
                 document.getElementById('results').innerHTML = "<p>Please enter valid numbers for High, Low, and Close.</p>";
                 return;
             }
-            
+
             let P = (high + low + close) / 3;
             let R1 = (2 * P) - low;
             let R2 = P + (high - low);
@@ -173,13 +207,10 @@
             let S1 = (2 * P) - high;
             let S2 = P - (high - low);
             let S3 = low - 2 * (high - P);
-            
+
             document.getElementById('results').innerHTML = `
                 <table>
-                    <tr>
-                        <th>Level</th>
-                        <th>Value</th>
-                    </tr>
+                    <tr><th>Level</th><th>Value</th></tr>
                     <tr><td>Pivot (P)</td><td>${P.toFixed(2)}</td></tr>
                     <tr><td>Resistance 1 (R1)</td><td>${R1.toFixed(2)}</td></tr>
                     <tr><td>Resistance 2 (R2)</td><td>${R2.toFixed(2)}</td></tr>
@@ -191,11 +222,6 @@
             `;
         }
     </script>
-
-<div id="tweetEmbed">Loading tweet...</div>
-
-<iframe src="https://script.google.com/macros/s/AKfycbxXEXu9tjye2L6X_V7bCcCMwZfM3FQI8CzFCNl2tw6TZxtxGH9SdgCCyfs-baaJVEYh6w/exec" width="100%" height="600" frameborder="0"></iframe>
-
-
 </body>
+
 </html>
